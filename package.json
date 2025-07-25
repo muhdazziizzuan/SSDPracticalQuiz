@@ -1,0 +1,23 @@
+{
+  "name": "ssd-practical-quiz",
+  "version": "1.0.0",
+  "description": "Flask web application with security features",
+  "main": "static/js/app.js",
+  "scripts": {
+    "lint": "eslint static/js/**/*.js",
+    "lint:security": "eslint static/js/**/*.js --config .eslintrc.security.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-plugin-security": "^1.7.1",
+    "@eslint/js": "^8.57.0"
+  },
+  "keywords": [
+    "flask",
+    "security",
+    "web-application"
+  ],
+  "author": "Muhammad Azzi Izzuan",
+  "license": "MIT"
+}

@@ -20,6 +20,7 @@ Runs on every push and pull request:
 - **Dependency Check**: Security vulnerability scanning with Safety and Bandit
 - **Integration Tests**: Comprehensive Flask application testing
 - **UI Testing**: Selenium-based browser testing over HTTP
+- **ESLint Security Scan**: JavaScript security analysis with ESLint security plugin
 - **Docker Build Test**: Validates Docker Compose setup
 - **Security Scan**: Trivy vulnerability scanner
 
@@ -76,6 +77,21 @@ safety check
 bandit -r .
 ```
 
+### JavaScript Development
+
+For frontend JavaScript development:
+
+```bash
+# Install Node.js dependencies
+npm install
+
+# Run ESLint security scan
+npm run lint:security
+
+# Run standard ESLint
+npm run lint
+```
+
 ## Services
 
 - **Flask App**: http://localhost:5000
@@ -89,6 +105,8 @@ bandit -r .
 - Secure session management
 - Regular dependency vulnerability scanning
 - Code security analysis with Bandit
+- JavaScript security scanning with ESLint security plugin
+- Client-side input validation and sanitization
 
 ## Git Configuration
 
