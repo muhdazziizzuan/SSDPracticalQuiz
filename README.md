@@ -92,11 +92,37 @@ npm run lint:security
 npm run lint
 ```
 
+### SonarQube Code Quality Analysis
+
+SonarQube is included for comprehensive code quality and security analysis:
+
+```bash
+# Start all services including SonarQube
+docker-compose up -d
+
+# Wait for SonarQube to start (may take a few minutes)
+# Then run the setup script to configure admin credentials
+bash sonarqube-setup.sh
+
+# Access SonarQube web interface
+# URL: http://127.0.0.1:9000/
+# Username: admin
+# Password: 2301955@SIT.singaporetech.edu.sg
+```
+
+**SonarQube Features:**
+- Code quality analysis for Python and JavaScript
+- Security vulnerability detection
+- Code coverage reporting
+- Technical debt assessment
+- Quality gates for CI/CD integration
+
 ## Services
 
 - **Flask App**: http://localhost:5000
 - **Nginx**: http://localhost:80
 - **Git Server**: http://localhost:3000
+- **SonarQube**: http://127.0.0.1:9000
 
 ## Security Features
 

@@ -9,6 +9,11 @@ yarn-error.log*
 # ESLint reports
 eslint-security-report.json
 
+# SonarQube
+.sonar/
+.scannerwork/
+sonar-project.properties.bak
+
 # Package lock files
 package-lock.json
 yarn.lock
