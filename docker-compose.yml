@@ -1,0 +1,46 @@
+version: '3.8'
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./htpasswd/.htpasswd:/etc/nginx/.htpasswd:ro
+      - ./:/usr/share/nginx/html:ro
+    depends_on:
+      - htpasswd
+  htpasswd:
+    image: httpd:2.4
+    entrypoint: ["htpasswd", "-Bbc", "/output/.htpasswd", "admin", "2301955@SIT.singaporetech.edu.sg"]
+    volumes:
+      - ./htpasswd:/output 
+  gitea:
+    image: gitea/gitea:latest
+    container_name: gitea
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - GITEA__security__INSTALL_LOCK=true
+      - GITEA__security__SECRET_KEY=supersecretkey
+      - GIT_AUTHOR_NAME=Muhammad Azzi Izzuan Bin Azahar
+      - GIT_AUTHOR_EMAIL=2301955@sit.singaporetech.edu.sg
+      - GIT_COMMITTER_NAME=Muhammad Azzi Izzuan Bin Azahar
+      - GIT_COMMITTER_EMAIL=2301955@sit.singaporetech.edu.sg
+    restart: always
+    ports:
+      - "3000:3000" # HTTP web UI
+      - "2222:22"   # SSH
+    volumes:
+      - ./gitea:/data 
+  flask:
+    image: python:3.11-slim
+    container_name: flask
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: /bin/sh -c "pip install -r requirements.txt && python app.py"
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=development 
