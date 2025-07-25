@@ -1,0 +1,78 @@
+name: Security Monitoring
+
+on:
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  dependency-update-check:
+    name: Check for Dependency Updates
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install pip-audit
+      run: pip install pip-audit
+      
+    - name: Run pip-audit
+      run: |
+        pip-audit --requirement requirements.txt --format=json --output=audit-report.json || true
+        
+    - name: Upload audit report
+      uses: actions/upload-artifact@v3
+      with:
+        name: dependency-audit-report
+        path: audit-report.json
+        
+  vulnerability-scan:
+    name: Vulnerability Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'table'
+        
+  code-quality:
+    name: Code Quality Check
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install quality tools
+      run: |
+        pip install flake8 black isort mypy
+        
+    - name: Run flake8
+      run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+      
+    - name: Check code formatting with black
+      run: black --check .
+      
+    - name: Check import sorting
+      run: isort --check-only .
+      
+    - name: Run type checking
+      run: mypy . --ignore-missing-imports || true
